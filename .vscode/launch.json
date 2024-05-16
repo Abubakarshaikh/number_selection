@@ -1,0 +1,51 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "1.0.0+11",
+    "configurations": [
+        {
+            "name": "candyhub (debug)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "--target",
+                "lib/main.dart"
+            ]
+        },
+        {
+            "name": "candyhub (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main.dart",
+            "args": [
+                "--target",
+                "lib/main.dart"
+            ]
+        },
+        {
+            "name": "candyhub (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main.dart",
+            "args": [
+                "--target",
+                "lib/main.dart"
+            ]
+        },
+        {
+            "name": "Launch (Fakes)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_fakes.dart",
+            "args": [
+                "--target",
+                "lib/main_fakes.dart"
+            ]
+        },
+    ]
+}
