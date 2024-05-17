@@ -49,7 +49,7 @@ Interact with the game by tapping on the numbers in the correct sequence as they
 - Random numbers will appear and animate on the game board.
 - Players must tap on the numbers in the correct ascending sequence (e.g., 1, 2, 3, 4, ...).
 - Each correct selection awards points to the player's score.
-- Incorrect selections will result in penalties or game over (configurable).
+- Incorrect selections will result in penalties.
 - The game timer limits the gameplay duration, adding a sense of urgency.
 
 
