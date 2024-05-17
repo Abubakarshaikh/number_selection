@@ -2,49 +2,92 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:number_selection/cubit/home_cubit.dart';
 import 'package:number_selection/cubit/home_state.dart';
-import 'package:number_selection/widgets/common_score.dart';
-import 'package:number_selection/widgets/common_timer.dart';
-import 'package:number_selection/widgets/number_selection.dart';
-import 'package:number_selection/widgets/number_sequence.dart';
+import 'package:number_selection/widgets/game_start.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const Column(
-            children: [
-              // Timer Area:
-              CommonTimer(),
-              // Score Area:
-              CommonScore(),
-            ],
-          ),
-          // Score selection (Center):
-          const Expanded(
-            child: NumberSelectionBoard(),
-          ),
-          // number sequences (original):
-          const NumberSequence(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) {
-                  return TextButton(
-                    onPressed: () {
-                      context.read<HomeCubit>().start();
+    return SafeArea(
+      child: Scaffold(
+        body: LayoutBuilder(builder: (context, constrained) {
+          if (constrained.maxWidth > 450) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  width: 500,
+                  child: BlocBuilder<HomeCubit, HomeState>(
+                    buildWhen: (previous, current) {
+                      return previous.isActive != current.isActive;
                     },
-                    child: const Text('Start'),
+                    builder: (context, state) {
+                      if (state.isActive) {
+                        return const GameStart();
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 36),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Welcom to the Number Selection Game'
+                                    .toUpperCase(),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 24),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<HomeCubit>().startGame();
+                                },
+                                child: const Text('START GAME'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return BlocBuilder<HomeCubit, HomeState>(
+              buildWhen: (previous, current) {
+                return previous.isActive != current.isActive;
+              },
+              builder: (context, state) {
+                if (state.isActive) {
+                  return const GameStart();
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 36),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Welcom to the Number Selection Game'.toUpperCase(),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<HomeCubit>().startGame();
+                          },
+                          child: const Text('START GAME'),
+                        ),
+                      ],
+                    ),
                   );
-                },
-              ),
-            ],
-          ),
-        ],
+                }
+              },
+            );
+          }
+        }),
       ),
     );
   }

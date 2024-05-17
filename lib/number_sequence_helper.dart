@@ -1,15 +1,12 @@
 import 'dart:math';
 
+import 'package:number_selection/sequence_display_style.dart';
+
 class NumberSequenceHelper {
   NumberSequenceHelper({
     required this.random,
   });
   final Random random;
-
-  int randomNumber(int length) {
-    final randomValue = (length / 2).round() + random.nextInt(length) + 1;
-    return randomValue;
-  }
 
   List<int> generateRandomSequence(int length) {
     int start = random.nextInt(10) + 1;
@@ -21,7 +18,26 @@ class NumberSequenceHelper {
     );
   }
 
-  int randomlyPopIndex(List<int> sequence) {
-    return random.nextInt(sequence.length);
+  List<int> generateRandomSelection(
+    List<int> randomSequence,
+  ) {
+    int start = random.nextInt(10) + 1;
+    int step = random.nextInt(5) + 1;
+
+    final randomNumber = List<int>.generate(
+      20,
+      (index) => start + (index * step),
+    );
+
+    randomNumber.addAll(randomSequence);
+
+    randomNumber.shuffle();
+    return randomNumber;
+  }
+
+  SequenceDisplayStyle getRandomSequenceDisplayStyle() {
+    const values = SequenceDisplayStyle.values;
+    final randomIndex = random.nextInt(values.length);
+    return values[randomIndex];
   }
 }
