@@ -11,13 +11,13 @@ Follow these steps to set up the project:
 
 1. Clone the repository:
 ```
-git clone https://github.com/your-username/flutter-animation-game.git
+git clone https://github.com/Abubakarshaikh/number_selection.git
 ```
 
 2. Navigate to the project directory:
 
 ```
-cd flutter-animation-game
+cd number_selection
 ```
 3. Install the required dependencies:
 ```
