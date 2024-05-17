@@ -34,10 +34,10 @@ flutter run --release --no-codesign
 ## Dependencies
 This project uses the following external packages:
 
-`just_audio: ^0.9.37` - For playing audio assets (sound effects)
-`flutter_bloc: ^8.1.5` - For state management using the Provider pattern
-`collection: ^8.1.5` - For filtring list
-`equatable: ^8.1.5` - For object compare
+- `just_audio: ^0.9.37` - For playing audio assets (sound effects)
+- `flutter_bloc: ^8.1.5` - For state management using the Provider pattern
+- `collection: ^8.1.5` - For filtring list
+- `equatable: ^8.1.5` - For object compare
 
 ## Usage
 To start the game, simply run the app on your mobile device or emulator/simulator. The game interface will appear with a game board, number selection area, score display, and timer.
