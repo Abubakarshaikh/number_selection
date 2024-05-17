@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,14 +19,19 @@ class HomeCubit extends Cubit<HomeState> {
 
   final NumberSequenceHelper _numberSequenceHelper;
 
+  // this event start the game
   void startGame() {
-    final randomSequence = _numberSequenceHelper.generateRandomSequence(5);
+    final randomSequence = _numberSequenceHelper.generateRandomSequence(
+      5,
+      isShuffle: state.level == Level.easy ? false : true,
+    );
     emit(
       HomeState(
+        level: state.level,
         isActive: true,
         randomSequence: randomSequence,
         score: state.score,
-        sequenceDisplay: randomSequence.elementAt(0),
+        sequenceTimer: 5,
       ),
     );
     gameTimer();
@@ -33,6 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
     numberSelection(randomSequence);
   }
 
+  // this event stop the game entirely
   void stopGame() {
     if (_timerForGame != null) {
       if (_timerForGame?.isActive ?? false) {
@@ -49,6 +56,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(const HomeState());
   }
 
+  // this event display sequence number with certain interval
   void sequenceDisplay() {
     // display sequence with 3 seconds one by one
     // emit sequence each by each
@@ -61,17 +69,21 @@ class HomeCubit extends Cubit<HomeState> {
     _timerForSequence = Timer.periodic(
       const Duration(seconds: 2),
       (timer) {
-        if (state.randomSequence.length > timer.tick) {
+        if (state.randomSequence.length > timer.tick - 1) {
+          log((timer.tick - 1).toString());
           final sequenceDisplayStyle =
               _numberSequenceHelper.getRandomSequenceDisplayStyle();
           emit(state.copyWith(
             isSequenceDisplayComleted: false,
             sequenceDisplayStyle: sequenceDisplayStyle,
-            sequenceDisplay: state.randomSequence.elementAt(timer.tick),
+            sequenceDisplay: state.randomSequence.elementAt(timer.tick - 1),
+            sequenceTimer: timer.tick,
           ));
         } else {
           emit(state.copyWith(
             isSequenceDisplayComleted: true,
+            sequenceDisplay: 0,
+            sequenceTimer: 0,
           ));
           timer.cancel();
         }
@@ -79,6 +91,7 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  // this event is use for select number selection for Sequence Matching
   void selectedSequence(int selectedNumber) async {
     // number selection is complete now show the selected sequence
     // emits number selection value
@@ -99,6 +112,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  // this event generate timer
   void gameTimer() async {
     // emits timer value second by second for 10 seconds
     // after 10 seconds, next sequence is generated
@@ -131,12 +145,16 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  // this event manage all score
   void gameScore() async {
     // emit score: increase or decrease base on
     // correct selection
     // make sure, it will run when user complete sequence
     // and press submit/enter
 
+    state.randomSequence.sort();
+    log('state.randomSequence: ${state.randomSequence}');
+    log('state.selectedSequence: ${state.selectedSequence}');
     if (const ListEquality()
         .equals(state.randomSequence, state.selectedSequence)) {
       await playSound(AppConstant.correct);
@@ -157,6 +175,7 @@ class HomeCubit extends Cubit<HomeState> {
     startGame();
   }
 
+  // this event display selection number accordinf Sequence number
   void numberSelection(List<int> randomSequence) {
     final randomSelections =
         _numberSequenceHelper.generateRandomSelection(randomSequence);
@@ -178,12 +197,23 @@ class HomeCubit extends Cubit<HomeState> {
     ));
   }
 
+  // this event play sound
   Future<void> playSound(String source) async {
     final playerAssetSource = AudioSource.asset(source);
     await audioPlayer.setAudioSource(playerAssetSource);
     await audioPlayer.play();
   }
 
+  void changeLevel(Level level) {
+    emit(
+      state.copyWith(
+        level: level,
+      ),
+    );
+    startGame();
+  }
+
+  // from here we are clean our memory
   @override
   Future<void> close() {
     _timerForGame?.cancel();

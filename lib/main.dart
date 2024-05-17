@@ -83,6 +83,10 @@ class AppTheme {
           foregroundColor: Colors.white,
         ),
       ),
+
+      radioTheme: RadioThemeData(
+        fillColor: WidgetStateProperty.all(AppConstant.secondary),
+      ),
     );
   }
 }

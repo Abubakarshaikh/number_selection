@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:number_selection/cubit/home_cubit.dart';
+import 'package:number_selection/cubit/home_state.dart';
 import 'package:number_selection/widgets/game_score.dart';
 import 'package:number_selection/widgets/game_timer.dart';
 import 'package:number_selection/widgets/number_selection.dart';
@@ -24,6 +25,48 @@ class GameStart extends StatelessWidget {
         const GameScore(),
         const SizedBox(
           height: 2,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 18),
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              return Row(
+                children: [
+                  Row(
+                    children: [
+                      Radio(
+                        value: Level.easy,
+                        groupValue: state.level,
+                        onChanged: (value) {
+                          context
+                              .read<HomeCubit>()
+                              .changeLevel(value ?? Level.easy);
+                        },
+                      ),
+                      const Text('Easy'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                        value: Level.hard,
+                        groupValue: state.level,
+                        onChanged: (value) {
+                          context
+                              .read<HomeCubit>()
+                              .changeLevel(value ?? Level.hard);
+                        },
+                      ),
+                      const Text('Hard'),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 4,
         ),
         Padding(
           padding: const EdgeInsets.only(left: 24),

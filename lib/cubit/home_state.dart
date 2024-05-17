@@ -2,6 +2,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:number_selection/sequence_display_style.dart';
 
+enum Level { easy, hard }
+
 class HomeState extends Equatable {
   final bool isActive;
   final int score;
@@ -12,6 +14,8 @@ class HomeState extends Equatable {
   final List<int> randomSequence;
   final List<List<int>> randomNumbers;
   final SequenceDisplayStyle sequenceDisplayStyle;
+  final int sequenceTimer;
+  final Level level;
   const HomeState({
     this.isActive = false,
     this.score = 0,
@@ -22,6 +26,8 @@ class HomeState extends Equatable {
     this.randomSequence = const [],
     this.randomNumbers = const [],
     this.sequenceDisplayStyle = SequenceDisplayStyle.one,
+    this.sequenceTimer = 0,
+    this.level = Level.easy,
   });
 
   @override
@@ -36,6 +42,8 @@ class HomeState extends Equatable {
       randomSequence,
       randomNumbers,
       sequenceDisplayStyle,
+      sequenceTimer,
+      level,
     ];
   }
 
@@ -49,6 +57,8 @@ class HomeState extends Equatable {
     List<int>? randomSequence,
     List<List<int>>? randomNumbers,
     SequenceDisplayStyle? sequenceDisplayStyle,
+    int? sequenceTimer,
+    Level? level,
   }) {
     return HomeState(
       isActive: isActive ?? this.isActive,
@@ -61,6 +71,8 @@ class HomeState extends Equatable {
       randomSequence: randomSequence ?? this.randomSequence,
       randomNumbers: randomNumbers ?? this.randomNumbers,
       sequenceDisplayStyle: sequenceDisplayStyle ?? this.sequenceDisplayStyle,
+      sequenceTimer: sequenceTimer ?? this.sequenceTimer,
+      level: level ?? this.level,
     );
   }
 }
